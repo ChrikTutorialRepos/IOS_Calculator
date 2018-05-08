@@ -23,22 +23,32 @@ class ViewController: UIViewController {
     }
     
     var placeHolder : String = ""
+    var isDecimal : Bool = false
 
     @IBAction func NumberPress(_ sender: UIButton) {
-        var char : String = "\(sender.tag)"
-        if char == "10" {
-            char = "."
-        }
-        if display.text == "0" {
-            display.text = char
-        }
-        else{
-            display.text! += char
+        if display.text!.count < 15 {
+            var char : String = "\(sender.tag)"
+            if display.text == "0" && char != "10" {
+                display.text = char
+            }
+            else{
+                if char == "10" {
+                    if isDecimal == false {
+                        char = "."
+                        display.text! += char
+                        isDecimal = true
+                    }
+                }
+                else{
+                    display.text! += char
+                }
+            }
         }
     }
     
     @IBAction func UniaryOp(_ sender: UIButton) {
         display.text = "0"
+        isDecimal = false
     }
     
     @IBAction func BiOp(_ sender: UIButton) {
