@@ -36,8 +36,16 @@ class ViewController: UIViewController {
                 display.text = "0."
                 isDecimal = true
             }
-            else if sender.tag != 0 {
+            else if sender.tag == 0 {
+                if Float(display.text!)! != 0 {
+                    display.text = "\(sender.tag)"
+                }
+            }
+            else {
                 display.text = "\(sender.tag)"
+            }
+            if sender.tag != 0 {
+                newNum = false
             }
         }
         else {
@@ -50,10 +58,6 @@ class ViewController: UIViewController {
             else {
                 display.text! += "\(sender.tag)"
             }
-        }
-        
-        if sender.tag != 0 {
-            newNum = false
         }
     }
     
@@ -80,7 +84,13 @@ class ViewController: UIViewController {
                 mod(cur: cur)
             }
             oper = 0
-            display.text = "\(firstNum)"
+            
+            if firstNum - firstNum.rounded(.down) == 0 {
+                display.text = "\(Int(firstNum))"
+            }
+            else {
+                display.text = "\(firstNum)"
+            }
         }
         if sender.tag == 1 {
             display.text = "0"
@@ -89,34 +99,46 @@ class ViewController: UIViewController {
             isDecimal = false
         }
         if sender.tag == 2 {
-            var tempNum : Float = Float(display.text!)!
-            tempNum = -1 * tempNum
-            display.text = "\(tempNum)"
+            var cur : Float = Float(display.text!)!
+            cur = -1 * cur
+            if !isDecimal {
+                display.text = "\(Int(cur))"
+            }
+            else {
+                display.text = "\(cur)"
+            }
         }
     }
 
     @IBAction func BiOp(_ sender: UIButton) {
-        newNum = true
         let cur : Float = Float(display.text!)!
-        if oper == 0 {
-            firstNum = cur
+        if !newNum {
+            if oper == 0 {
+                firstNum = cur
+            }
+            if oper == 1 {
+                add(cur: cur)
+            }
+            else if oper == 2 {
+                sub(cur: cur)
+            }
+            else if oper == 3 {
+                mul(cur: cur)
+            }
+            else if oper == 4 {
+                div(cur: cur)
+            }
+            else if oper == 5 {
+                mod(cur: cur)
+            }
+            if firstNum - firstNum.rounded(.down) == 0 {
+                display.text = "\(Int(firstNum))"
+            }
+            else {
+                display.text = "\(firstNum)"
+            }
+            newNum = true
         }
-        if oper == 1 {
-            add(cur: cur)
-        }
-        else if oper == 2 {
-            sub(cur: cur)
-        }
-        else if oper == 3 {
-            mul(cur: cur)
-        }
-        else if oper == 4 {
-            div(cur: cur)
-        }
-        else if oper == 5 {
-            mod(cur: cur)
-        }
-        display.text = "\(firstNum)"
         oper = sender.tag
     }
     
